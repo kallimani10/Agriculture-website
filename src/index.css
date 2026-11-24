@@ -1,0 +1,158 @@
+@import 'tailwindcss';
+
+/* ───────────── Design tokens ───────────── */
+@theme {
+  --color-forest-950: #071a12;
+  --color-forest-900: #0d2b1f;
+  --color-forest-800: #12382a;
+  --color-forest-700: #184a36;
+  --color-emerald-600: #1f6b47;
+  --color-emerald-500: #2a8457;
+  --color-leaf-400: #7fb56a;
+  --color-leaf-300: #a6cf8f;
+  --color-leaf-100: #e3efd6;
+  --color-cream-50: #fbf8f1;
+  --color-cream-100: #f6f1e5;
+  --color-beige-200: #ebe1cc;
+  --color-beige-300: #dccdb0;
+  --color-earth-600: #7a5533;
+  --color-earth-800: #4a321d;
+  --color-gold-400: #e7b955;
+  --color-gold-500: #d9a03a;
+
+  --font-display: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-marquee-reverse: marquee var(--marquee-duration, 40s) linear infinite reverse;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-drift: drift 22s ease-in-out infinite alternate;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes drift {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    100% { transform: translate3d(4%, -3%, 0) scale(1.08); }
+  }
+}
+
+/* ───────────── Base ───────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-cream-50 font-sans text-forest-900 antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { @apply bg-gold-400 text-forest-950; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* ───────────── Components ───────────── */
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-10;
+  }
+  .section-y {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 font-display text-[0.72rem] font-bold uppercase tracking-[0.22em];
+  }
+  .eyebrow::before {
+    content: '';
+    @apply inline-block h-px w-8 bg-current opacity-70;
+  }
+  .display-xl {
+    @apply font-display font-extrabold leading-[0.98] tracking-[-0.035em];
+    font-size: clamp(2.6rem, 6.4vw, 6rem);
+  }
+  /* Home hero headline — scales with viewport width AND height so it never
+     grows tall enough to slide under the navbar on wide-but-short screens. */
+  .hero-title {
+    @apply font-display font-extrabold leading-[0.98] tracking-[-0.035em];
+    font-size: clamp(2.5rem, min(6.2vw, 10.5svh), 6rem);
+  }
+  .display-lg {
+    @apply font-display font-extrabold leading-[1.02] tracking-[-0.03em];
+    font-size: clamp(2.1rem, 4.6vw, 4.1rem);
+  }
+  .display-md {
+    @apply font-display font-bold leading-[1.08] tracking-[-0.025em];
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+  }
+  .lead {
+    @apply text-base leading-relaxed md:text-lg;
+  }
+
+  /* Furrow texture — evokes ploughed field rows */
+  .furrows {
+    background-image: repeating-linear-gradient(
+      -12deg,
+      rgb(255 255 255 / 0.035) 0 2px,
+      transparent 2px 22px
+    );
+  }
+  .furrows-dark {
+    background-image: repeating-linear-gradient(
+      -12deg,
+      rgb(13 43 31 / 0.05) 0 2px,
+      transparent 2px 22px
+    );
+  }
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Form fields */
+  .field {
+    @apply w-full rounded-xl border border-beige-300 bg-white px-4 py-3.5 text-[0.95rem] text-forest-900 transition duration-300 placeholder:text-forest-900/35;
+  }
+  .field:hover { @apply border-forest-700/40; }
+  .field:focus {
+    @apply border-emerald-600 outline-none;
+    box-shadow: 0 0 0 4px rgb(31 107 71 / 0.12);
+  }
+  .field[aria-invalid='true'] {
+    @apply border-red-600/70;
+    box-shadow: 0 0 0 4px rgb(220 38 38 / 0.08);
+  }
+
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+/* ───────────── Reduced motion ───────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
